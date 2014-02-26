@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Application" default="build">
-    <target name="build" depends="composer,phpunit"/>
+    <target name="build" depends="phpunit"/>
 
-    <target name="composer"  description="Download composer and install project dependancies">
-        <exec executable="wget" >
-            <arg value="-nc" />
-            <arg value="http://getcomposer.org/composer.phar" />
-        </exec>
-        <exec executable="php" >
-            <arg value="composer.phar" />
-            <arg value="install" />
-            <arg value="--dev" />
-            <arg value="--prefer-source" />
+    <target name="composer" description="Install dependencies with Composer">
+        <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
+        <exec executable="php">
+            <arg value="composer.phar"/>
+            <arg value="install"/>
         </exec>
     </target>
-    <target name="phpunit" description="Execute EasySpinRDF tests">
-        <exec executable="vendor/bin/phpunit">
-            <arg line="--configuration app/phpunit.xml.dist"/>
+
+    <!-- Kick off phpunit -->
+    <target name="phpunit">
+        <exec dir="${basedir}" executable="bin/phpunit.bat" failonerror="true" description="Run unit app with PHPUnit 3.6.4">
+            <arg line="--configuration app/phpunit.xml.dist" />
+            <arg line="--verbose" />
         </exec>
+        <zip destfile="app/report/coverage.zip" basedir="app/report/coverage" />
+        <echo>##teamcity[publishArtifacts 'app/report/coverage.zip']</echo>
     </target>
 
 </project>
