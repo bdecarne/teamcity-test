@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Application" default="build">
-    <target name="build" depends="composer,phpunit"/>
+    <target name="build" depends="composer,phpunit,phpmd"/>
 
     <target name="composer" description="Install dependencies with Composer">
         <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
@@ -12,12 +12,23 @@
 
     <!-- Kick off phpunit -->
     <target name="phpunit">
-        <exec dir="${basedir}" executable="bin/phpunit" failonerror="true" description="Run unit app with PHPUnit 3.6.4">
+        <exec dir="${basedir}" executable="phpunit" failonerror="true" description="Run unit app with PHPUnit 3.6.4">
             <arg line="--configuration app/phpunit.xml.dist" />
             <arg line="--verbose" />
         </exec>
         <zip destfile="app/report/coverage.zip" basedir="app/report/coverage" />
         <echo>##teamcity[publishArtifacts 'app/report/coverage.zip']</echo>
+    </target>
+
+    <target name="phpmd" description="PHP Mess Detector" >
+        <exec executable="phpmd" failonerror="false" osfamily="unix">
+            <arg line="${basedir}" />
+            <arg line="xml" />
+            <arg line="naming,unusedcode,codesize" />
+            <arg line="--reportfile app/reports/phpmd.xml" />
+            <arg line="--exclude vendor/,Entity/,.tmp/,Tests/app/bundles/" /> <!-- Entity because traits bug -->
+        </exec>
+        <echo message="##teamcity[importData type='pmd' path='app/reports/phpmd.xml']"/>
     </target>
 
 </project>
