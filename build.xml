@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Application" default="build">
-    <target name="build" depends="phpunit"/>
+    <target name="build" depends="composer,phpunit"/>
 
     <target name="composer" description="Install dependencies with Composer">
         <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
