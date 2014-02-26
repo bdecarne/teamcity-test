@@ -12,7 +12,7 @@
 
     <!-- Kick off phpunit -->
     <target name="phpunit">
-        <exec dir="${basedir}" executable="bin/phpunit.bat" failonerror="true" description="Run unit app with PHPUnit 3.6.4">
+        <exec dir="${basedir}" executable="bin/phpunit" failonerror="true" description="Run unit app with PHPUnit 3.6.4">
             <arg line="--configuration app/phpunit.xml.dist" />
             <arg line="--verbose" />
         </exec>
