@@ -22,7 +22,7 @@
 
     <target name="phpmd" description="PHP Mess Detector" >
         <exec executable="phpmd" failonerror="false" osfamily="unix">
-            <arg line="${basedir}" />
+            <arg line="${basedir}/src" />
             <arg line="xml" />
             <arg line="naming,unusedcode,codesize" />
             <arg line="--reportfile app/reports/phpmd.xml" />
