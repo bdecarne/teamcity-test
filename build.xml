@@ -19,16 +19,16 @@
         <zip destfile="app/report/coverage.zip" basedir="app/report/coverage" />
         <echo>##teamcity[publishArtifacts 'app/report/coverage.zip']</echo>
     </target>
-	
+
 	<target name="phpunit-xsl" description="Get phpunit to junit xsl">
-		<get src="http://d.whysofast.ru/phpunit_to_junit.xsl" dest="${basedir}/phpunit_to_junit.xsl" skipexisting="true"/>
+		<get src="https://raw.github.com/qyi/cookbooks/master/teamcity/files/default/phpunit_to_junit.xsl" dest="${basedir}/phpunit_to_junit.xsl" skipexisting="true"/>
     </target>
-    
+
     <target name="phpunit-report" description="Convert phpunit.xml to junit.xml">
         <xslt in="app/reports/test-results.xml" out="app/reports/junit.xml" style="${basedir}/phpunit_to_junit.xsl"/>
-        <echo message="##teamcity[importData type='junit' path='app/reports/junit.xml']" />        
+        <echo message="##teamcity[importData type='junit' path='app/reports/junit.xml']" />
     </target>
-	
+
     <target name="phpmd" description="PHP Mess Detector" >
         <exec executable="phpmd" failonerror="false" osfamily="unix">
             <arg line="${basedir}/src" />
